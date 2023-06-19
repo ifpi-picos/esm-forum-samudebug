@@ -20,7 +20,7 @@ function cadastrar_pergunta(repositorio, texto) {
   repositorio.criar_pergunta(texto);
 }
 
-function cadastrar_resposta(id_pergunta, texto) {
+function cadastrar_resposta(repositorio, id_pergunta, texto) {
   repositorio.criar_resposta(id_pergunta, texto);
 }
 

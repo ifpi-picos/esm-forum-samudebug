@@ -18,7 +18,10 @@ const bd = {
 };
 
 function recuperar_todas_perguntas() {
-    return bd.perguntas;
+    return bd.perguntas.map((el) => {
+        const num_respostas = recuperar_num_respostas(el.id);
+        return {...el, num_respostas};
+    });
 }
 
 function recuperar_pergunta(id_pergunta) {
