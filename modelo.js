@@ -12,33 +12,28 @@ function reconfig_bd(mock_bd) {
 //   id_usuario: int
 //   num_respostas: int 
 // }
-function listar_perguntas() {
-  const perguntas = bd.queryAll('select * from perguntas', []);
-  perguntas.forEach(pergunta => pergunta['num_respostas'] = get_num_respostas(pergunta['id_pergunta']));
-  return perguntas;
+function listar_perguntas(repositorio) {
+  return repositorio.recuperar_todas_perguntas();
 }
 
-function cadastrar_pergunta(texto) {
-  const params = [texto, 1];
-  bd.exec('INSERT INTO perguntas (texto, id_usuario) VALUES(?, ?)', params);
+function cadastrar_pergunta(repositorio, texto) {
+  repositorio.criar_pergunta(texto);
 }
 
 function cadastrar_resposta(id_pergunta, texto) {
-  const params = [id_pergunta, texto];
-  bd.exec('INSERT INTO respostas (id_pergunta, texto) VALUES(?, ?)', params);
+  repositorio.criar_resposta(id_pergunta, texto);
 }
 
-function get_pergunta(id_pergunta) {
-  return bd.query('select * from perguntas where id_pergunta = ?', [id_pergunta]);
+function get_pergunta(repositorio, id_pergunta) {
+  return repositorio.recuperar_pergunta(id_pergunta);
 }
 
-function get_respostas(id_pergunta) {
-  return bd.queryAll('select * from respostas where id_pergunta = ?', [id_pergunta]);
+function get_respostas(repositorio, id_pergunta) {
+  return repositorio.recuperar_todas_respostas(id_pergunta);
 }
 
-function get_num_respostas(id_pergunta) {
-  const resultado = bd.query('select count(*) from respostas where id_pergunta = ?', [id_pergunta]);
-  return resultado['count(*)'];
+function get_num_respostas(repositorio, id_pergunta) {
+  return repositorio.recuperar_num_respostas(id_pergunta);
 }
 
 exports.reconfig_bd = reconfig_bd;

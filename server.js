@@ -2,7 +2,7 @@ const express = require('express')
 const modelo = require('./modelo.js');
 
 const app = express()
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.set('views', './visao');
 app.set('view engine', 'ejs');
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/perguntas', (req, res) => {
-  try {
+  try {    
     modelo.cadastrar_pergunta(req.body.pergunta);
     res.render('pergunta-sucesso');
   }
