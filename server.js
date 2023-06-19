@@ -1,5 +1,6 @@
 const express = require('express')
 const modelo = require('./modelo.js');
+const repositorio = require('./repositorio_bd.js');
 
 const app = express()
 app.use(express.urlencoded({ extended: true }));
@@ -9,7 +10,7 @@ app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
   try {
-    const perguntas = modelo.listar_perguntas();
+    const perguntas = modelo.listar_perguntas(repositorio);
     res.render('index', {
       perguntas: perguntas
     });
@@ -21,7 +22,7 @@ app.get('/', (req, res) => {
 
 app.post('/perguntas', (req, res) => {
   try {    
-    modelo.cadastrar_pergunta(req.body.pergunta);
+    modelo.cadastrar_pergunta(repositorio, req.body.pergunta);
     res.render('pergunta-sucesso');
   }
   catch(erro) {
@@ -31,8 +32,8 @@ app.post('/perguntas', (req, res) => {
 
 app.get('/respostas', (req, res) => {
   const id_pergunta = req.query.id_pergunta;
-  const pergunta = modelo.get_pergunta(id_pergunta);
-  const respostas = modelo.get_respostas(id_pergunta);
+  const pergunta = modelo.get_pergunta(repositorio, id_pergunta);
+  const respostas = modelo.get_respostas(repositorio, id_pergunta);
   try {
     res.render('respostas', {
       pergunta: pergunta,
@@ -48,7 +49,7 @@ app.post('/respostas', (req, res) => {
   try {
     const id_pergunta = req.body.id_pergunta;
     const resposta = req.body.resposta;
-    modelo.cadastrar_resposta(id_pergunta, resposta);
+    modelo.cadastrar_resposta(repositorio, id_pergunta, resposta);
     res.render('resposta-sucesso', {
       id_pergunta: id_pergunta
     });
